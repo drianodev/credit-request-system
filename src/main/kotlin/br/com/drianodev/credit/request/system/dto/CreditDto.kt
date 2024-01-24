@@ -2,14 +2,18 @@ package br.com.drianodev.credit.request.system.dto
 
 import br.com.drianodev.credit.request.system.entity.Credit
 import br.com.drianodev.credit.request.system.entity.Customer
+import jakarta.validation.constraints.Future
+import jakarta.validation.constraints.Max
+import jakarta.validation.constraints.NotNull
 import java.math.BigDecimal
 import java.time.LocalDate
 
 data class CreditDto(
-    val creditValue: BigDecimal,
-    val dayFirstOfInstallment: LocalDate,
+    @field:NotNull(message = "Invalid input creditValue") val creditValue: BigDecimal,
+    @field:Future val dayFirstOfInstallment: LocalDate,
+    @field:Max(value = 48, message = "Number of installments cannot be greater than 48")
     val numberOfInstallments: Int,
-    val customerId: Long
+    @field:NotNull(message = "Invalid input customerId") val customerId: Long
 ) {
 
     fun toEntity(): Credit = Credit(
