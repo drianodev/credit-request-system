@@ -1,10 +1,13 @@
 package br.com.drianodev.credit.request.system.service.impl
 
 import br.com.drianodev.credit.request.system.entity.Credit
+import br.com.drianodev.credit.request.system.exception.BusinessException
 import br.com.drianodev.credit.request.system.repository.CreditRepository
 import br.com.drianodev.credit.request.system.service.ICreditService
+import org.springframework.stereotype.Service
 import java.util.*
 
+@Service
 class CreditService(
     private val creditRepository: CreditRepository,
     private val customerService: CustomerService
@@ -21,7 +24,7 @@ class CreditService(
 
     override fun findByCreditCode(customerId: Long, creditCode: UUID): Credit {
         val credit: Credit = (this.creditRepository.findByCreditCode(creditCode)
-            ?: throw RuntimeException("CreditCode $creditCode not found"))
-        return if (credit.customer?.id == customerId) credit else throw RuntimeException("Contact admin")
+            ?: throw BusinessException("CreditCode $creditCode not found"))
+        return if (credit.customer?.id == customerId) credit else throw BusinessException("Contact admin")
     }
 }
